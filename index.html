@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" data-page="entry">
+<head>
+  <meta charset="UTF-8" />
+  <title>StudyBuddy Quiz Contest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Reuse your StudyBuddy styling vibe -->
+  <link rel="stylesheet" href="css/global.css" />
+</head>
+<body>
+  <main class="sb-page">
+    <section class="sb-card entry-card">
+      <h1>🎉 StudyBuddy Quiz Contest</h1>
+      <p class="muted">
+        Answer StudyBuddy questions as fast and accurately as you can.
+        Highest score + least time wins!
+      </p>
+
+      <!-- Rules -->
+      <section class="rules">
+        <h2>📜 Contest Rules</h2>
+        <ol>
+          <li>This contest is open to current students only. Please use your <strong>official student email</strong>.</li>
+          <li>You will answer a fixed set of <strong>StudyBuddy-themed questions</strong> in one sitting.</li>
+          <li>Your <strong>timer starts as soon as you begin the quiz</strong> and stops only when you submit.</li>
+          <li>Your score is based on:
+            <ul>
+              <li>✅ Number of correct answers</li>
+              <li>⏱️ Time taken (faster time wins if scores are tied)</li>
+            </ul>
+          </li>
+          <li>You can <strong>attempt the quiz only once</strong> per email address.</li>
+          <li>Do not refresh the page or use the Back button during the quiz.</li>
+          <li>
+            By clicking “I agree to the rules”, you consent to your
+            <strong>name, email, score, and time</strong> being stored
+            for the leaderboard and prize decisions.
+          </li>
+          <li>The organizers’ decision on winners will be <strong>final and binding</strong>.</li>
+        </ol>
+      </section>
+
+      <!-- Entry form -->
+      <form id="entryForm" class="entry-form">
+        <div class="field">
+          <label for="firstName">First name</label>
+          <input id="firstName" name="firstName" type="text" required placeholder="Akash" />
+        </div>
+
+        <div class="field">
+          <label for="email">Student email</label>
+          <input id="email" name="email" type="email" required placeholder="yourname@school.edu" />
+        </div>
+
+        <label class="checkbox">
+          <input id="agree" type="checkbox" required />
+          <span>I have read and agree to the contest rules.</span>
+        </label>
+
+        <button type="submit" class="btn primary full-width">
+          🚀 Start Quiz
+        </button>
+
+        <p class="tiny muted">
+          Your details are used only for this contest leaderboard and prize contact.
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/entry.js"></script>
+</body>
+</html>
