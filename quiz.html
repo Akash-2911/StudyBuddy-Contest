@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>StudyBuddy Quiz – Questions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="global.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-logo">SB</div>
+        <div class="brand-text">
+          <span>StudyBuddy Quiz</span>
+          <span>Question Round</span>
+        </div>
+      </div>
+      <a class="header-link" href="leaderboard.html">Leaderboard ↗</a>
+    </header>
+
+    <main class="card">
+      <div class="quiz-meta">
+        <span id="playerLabel" class="muted">Loading player…</span>
+
+        <span class="timer-chip">
+          <span class="timer-dot"></span>
+          <span id="timerLabel">00:00</span>
+        </span>
+      </div>
+
+      <h1>Practice? Nope. This one counts.</h1>
+      <p class="muted">
+        Answer all questions about StudyBuddy. You don’t lose marks for wrong
+        answers, so best guess is better than blank.
+      </p>
+
+      <form id="quizForm" class="quiz-card">
+        <!-- questions rendered by JS -->
+      </form>
+
+      <div class="button-row">
+        <button type="button" id="submitQuiz" class="btn btn-primary btn-full">
+          Submit answers
+        </button>
+      </div>
+
+      <p class="chip-warning" style="margin-top:12px;">
+        ⚠️ Do <strong>not</strong> close this tab until you see the
+        “Result saved” message.
+      </p>
+    </main>
+  </div>
+
+  <!-- Result modal -->
+  <div class="backdrop" id="resultBackdrop">
+    <div class="modal">
+      <h2>All done! 🎉</h2>
+      <p id="resultText">
+        Calculating your score...
+      </p>
+      <div class="modal-actions">
+        <button class="btn btn-outline btn-sm" id="closeResult">
+          Close
+        </button>
+        <button class="btn btn-primary btn-sm" id="viewLeaderboard">
+          View leaderboard →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase + quiz logic -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+</html>
