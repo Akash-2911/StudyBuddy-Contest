@@ -1,33 +1,42 @@
-// entry.js
+// js/entry.js
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("entryForm");
+  const nameInput = document.getElementById("nameInput");
+  const emailInput = document.getElementById("emailInput");
+  const agreeRules = document.getElementById("agreeRules");
+  const startBtn = document.getElementById("startBtn");
+  const goLeaderboard = document.getElementById("goLeaderboard");
+
+  function validateForm() {
+    const nameOk = nameInput.value.trim().length >= 2;
+    const emailVal = emailInput.value.trim();
+    const emailOk = emailVal.includes("@") && emailVal.length >= 5;
+    const agreed = agreeRules.checked;
+    startBtn.disabled = !(nameOk && emailOk && agreed);
+  }
+
+  nameInput.addEventListener("input", validateForm);
+  emailInput.addEventListener("input", validateForm);
+  agreeRules.addEventListener("change", validateForm);
+
+  goLeaderboard.addEventListener("click", () => {
+    window.location.href = "leaderboard.html";
+  });
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const firstName = document.getElementById("firstName").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const agree = document.getElementById("agree").checked;
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim().toLowerCase();
 
-    if (!firstName || !email || !agree) {
-      alert("Please fill your name, email and agree to the rules.");
-      return;
-    }
+    // Persist for quiz + highlighting later
+    sessionStorage.setItem("sb_contest_name", name);
+    sessionStorage.setItem("sb_contest_email", email);
 
-    // Simple session ID for this attempt
-    const sessionId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    // Clean any previous run
+    sessionStorage.removeItem("sb_contest_start");
 
-    // Start time (we’ll subtract on quiz submit)
-    const startedAt = Date.now();
-
-    // Save basic info in localStorage so quiz + leaderboard can use it
-    localStorage.setItem(
-      "sb_contest_player",
-      JSON.stringify({ firstName, email, sessionId, startedAt })
-    );
-
-    // Redirect to quiz page, also pass sessionId in URL if needed
-    const params = new URLSearchParams({ sessionId });
-    window.location.href = `quiz.html?${params.toString()}`;
+    window.location.href = "quiz.html";
   });
 });
