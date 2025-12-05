@@ -1,6 +1,8 @@
-// js/quiz.js
+// ==========================================
+// quiz.js — Contest Quiz Logic + Supabase
+// ==========================================
 
-// --- Supabase config (client-side anon key only) ---
+// --- Supabase config ---
 const SUPABASE_URL = "https://gzzriudaiaskiqskigey.supabase.co";
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6enJpdWRhaWFza2lxc2tpZ2V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxNjEzNzIsImV4cCI6MjA3ODczNzM3Mn0.c2a74KaLRgyw8gecbShPNN124X9RgE0UIEoGdSh_29k";
@@ -10,8 +12,7 @@ const sbClient = window.supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-// --- Fixed questions ---
-
+// --- FIXED QUESTIONS (shuffled per user) ---
 const QUESTIONS = [
   {
     text: "What is the main purpose of StudyBuddy?",
@@ -24,8 +25,7 @@ const QUESTIONS = [
     correctIndex: 1,
   },
   {
-    text:
-      "What do users earn for completing quizzes and tasks on StudyBuddy?",
+    text: "What do users earn for completing quizzes and tasks on StudyBuddy?",
     options: [
       "Only badges",
       "Only XP points",
@@ -65,24 +65,21 @@ const QUESTIONS = [
     correctIndex: 2,
   },
   {
-    text:
-      "Which of the following is a technical emerging trend used in StudyBuddy’s development?",
+    text: "Which technical emerging trend is used in StudyBuddy’s development?",
     options: ["Gig Economy", "Artificial Intelligence", "Digital Wellness", "Content Moderation"],
     correctIndex: 1,
   },
   {
-    text:
-      "Which of these is a non-technical trend that StudyBuddy supports?",
+    text: "Which non-technical trend does StudyBuddy support?",
     options: ["Ethical AI", "Blockchain", "Edge Computing", "Biometrics"],
     correctIndex: 0,
   },
   {
-    text:
-      "What is the benefit of gamification in learning platforms like StudyBuddy?",
+    text: "What is the benefit of gamification in StudyBuddy?",
     options: [
       "Makes learning longer but more detailed",
       "Helps users earn money directly",
-      "Increases engagement and motivation to study",
+      "Increases engagement and motivation",
       "Removes the need for instructors",
     ],
     correctIndex: 2,
@@ -94,15 +91,14 @@ const QUESTIONS = [
   },
 ];
 
-// --- Helper functions ---
-
-function shuffle(array) {
-  const arr = array.slice();
-  for (let i = arr.length - 1; i > 0; i--) {
+// --- UTILITIES ---
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+    [a[i], a[j]] = [a[j], a[i]];
   }
-  return arr;
+  return a;
 }
 
 function formatTime(seconds) {
@@ -111,16 +107,18 @@ function formatTime(seconds) {
   return `${m}:${s}`;
 }
 
+// --- MAIN ---
 document.addEventListener("DOMContentLoaded", () => {
   const name = sessionStorage.getItem("sb_contest_name");
   const email = sessionStorage.getItem("sb_contest_email");
 
-  // If someone opens quiz directly, send back to entry
+  // User cannot access quiz without entry page
   if (!name || !email) {
     window.location.replace("index.html");
     return;
   }
 
+  // DOM elements
   const playerLabel = document.getElementById("playerLabel");
   const timerLabel = document.getElementById("timerLabel");
   const quizForm = document.getElementById("quizForm");
@@ -133,13 +131,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   playerLabel.textContent = `Player: ${name} (${email})`;
 
-  // Timer
+  // TIMING LOGIC
   let elapsed = 0;
-  timerLabel.textContent = "00:00";
+  let start = Number(sessionStorage.getItem("sb_contest_start"));
 
-  const existingStart = sessionStorage.getItem("sb_contest_start");
-  let start = existingStart ? Number(existingStart) : Date.now();
-  if (!existingStart) {
+  if (!start) {
+    start = Date.now();
     sessionStorage.setItem("sb_contest_start", String(start));
   }
 
@@ -148,117 +145,98 @@ document.addEventListener("DOMContentLoaded", () => {
     timerLabel.textContent = formatTime(elapsed);
   }, 1000);
 
-  // Prepare shuffled questions with stable correct text
+  // PREP QUESTIONS (shuffle Qs + options)
   const shuffledQuestions = shuffle(QUESTIONS).map((q) => {
     const correctText = q.options[q.correctIndex];
-    const shuffledOpts = shuffle(q.options);
+    const shuffledOptions = shuffle(q.options);
     return {
       text: q.text,
-      options: shuffledOpts,
+      options: shuffledOptions,
       correctText,
     };
   });
 
-  // Render to DOM
+  // RENDER QUIZ
   quizForm.innerHTML = "";
-  shuffledQuestions.forEach((q, index) => {
-    const qDiv = document.createElement("div");
-    qDiv.className = "quiz-question";
+  shuffledQuestions.forEach((q, idx) => {
+    const wrap = document.createElement("div");
+    wrap.className = "quiz-question";
 
-    const qTitle = document.createElement("div");
-    qTitle.className = "quiz-question-title";
-    qTitle.textContent = `Q${index + 1}: ${q.text}`;
-    qDiv.appendChild(qTitle);
+    wrap.innerHTML = `
+      <h3>Q${idx + 1}: ${q.text}</h3>
+      <ul class="options-list">
+        ${q.options
+          .map(
+            (opt, i) => `
+          <li class="option-row">
+            <label>
+              <input type="radio" name="q${idx}" value="${opt}">
+              <span>${String.fromCharCode(65 + i)}) ${opt}</span>
+            </label>
+          </li>
+        `
+          )
+          .join("")}
+      </ul>
+    `;
 
-    const list = document.createElement("ul");
-    list.className = "options-list";
-
-    q.options.forEach((optText, optIndex) => {
-      const li = document.createElement("li");
-      li.className = "option-row";
-
-      const input = document.createElement("input");
-      input.type = "radio";
-      input.name = `q${index}`;
-      input.value = optText;
-
-      const label = document.createElement("label");
-      label.style.flex = "1";
-      label.textContent = `${String.fromCharCode(65 + optIndex)}) ${optText}`;
-
-      li.appendChild(input);
-      li.appendChild(label);
-      list.appendChild(li);
-    });
-
-    qDiv.appendChild(list);
-    quizForm.appendChild(qDiv);
+    quizForm.appendChild(wrap);
   });
 
-  function openModal(message) {
-    resultText.innerHTML = message;
+  // --- MODAL HELPERS ---
+  function openModal(msg) {
+    resultText.innerHTML = msg;
     backdrop.classList.add("show");
   }
-
   function closeModal() {
     backdrop.classList.remove("show");
   }
 
-  closeResult.addEventListener("click", closeModal);
-  viewLeaderboard.addEventListener("click", () => {
-    window.location.href = "leaderboard.html";
-  });
+  closeResult.onclick = closeModal;
+  viewLeaderboard.onclick = () => (window.location.href = "leaderboard.html");
 
+  // --- SUBMIT QUIZ ---
   submitBtn.addEventListener("click", async () => {
     submitBtn.disabled = true;
     submitBtn.textContent = "Submitting…";
     clearInterval(timerId);
 
-    // Final elapsed
     elapsed = Math.floor((Date.now() - start) / 1000);
-    const totalQuestions = shuffledQuestions.length;
 
     let correct = 0;
-    shuffledQuestions.forEach((q, index) => {
-      const chosen = document.querySelector(
-        `input[name="q${index}"]:checked`
-      );
-      if (chosen && chosen.value === q.correctText) {
-        correct += 1;
-      }
+
+    shuffledQuestions.forEach((q, idx) => {
+      const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+      if (selected && selected.value === q.correctText) correct++;
     });
 
-    const score = correct;
-    const message = `You answered <strong>${correct}</strong> out of <strong>${totalQuestions}</strong> correctly in <strong>${formatTime(
-      elapsed
-    )}</strong>.`;
+    const msg = `
+      You got <strong>${correct}</strong> out of <strong>${shuffledQuestions.length}</strong> correct.<br>
+      Time: <strong>${formatTime(elapsed)}</strong>
+    `;
 
-    // Save to Supabase
+    // --- SAVE TO SUPABASE (FIXED TABLE NAME) ---
     try {
-      const { error } = await sbClient.from("results").insert({
+      const { error } = await sbClient.from("contest_entries").insert({
         name,
         email,
-        score,
+        score: correct,
         time_taken: elapsed,
       });
 
       if (error) {
         console.error(error);
-        openModal(
-          `${message}<br><br>⚠️ There was a problem saving your result, but your answers were submitted. Please contact the StudyBuddy team.`
-        );
+        openModal(`${msg}<br><br>⚠️ Error saving result.`);
       } else {
         openModal(
-          `${message}<br><br>✅ Your result has been saved! Tap “View leaderboard” to see how you rank.`
+          `${msg}<br><br>✅ Result saved! View the leaderboard to see your rank.`
         );
       }
-    } catch (err) {
-      console.error(err);
-      openModal(
-        `${message}<br><br>⚠️ Network error while saving your result. Please show this screen to the StudyBuddy team.`
-      );
-    } finally {
-      submitBtn.textContent = "Submitted";
+    } catch (e) {
+      console.error(e);
+      openModal(`${msg}<br><br>⚠️ Network error.`);
     }
+
+    submitBtn.textContent = "Submitted";
   });
 });
