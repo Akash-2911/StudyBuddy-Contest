@@ -1,6 +1,6 @@
 // ==========================================
 // quiz.js — Contest Quiz Logic + Supabase
-// ==========================================
+// =========================================
 
 // --- Supabase config ---
 const SUPABASE_URL = "https://gzzriudaiaskiqskigey.supabase.co";
