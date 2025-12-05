@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>StudyBuddy Quiz – Leaderboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="global.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-logo">SB</div>
+        <div class="brand-text">
+          <span>StudyBuddy Quiz</span>
+          <span>Live Leaderboard</span>
+        </div>
+      </div>
+      <a class="header-link" href="index.html">Enter quiz ↗</a>
+    </header>
+
+    <main class="card">
+      <div class="quiz-meta">
+        <h1 style="margin:0;">Leaderboard</h1>
+        <button class="btn btn-outline btn-sm" id="refreshBtn">
+          Refresh ↺
+        </button>
+      </div>
+      <p class="muted">
+        Sorted by <strong>score (high → low)</strong>, then
+        <strong>time taken (low → high)</strong>.
+      </p>
+
+      <ul class="leaderboard-list" id="leaderboardList">
+        <!-- rows injected by JS -->
+      </ul>
+
+      <p class="center muted" id="lbFooter" style="margin-top:10px;">
+        Loading results…
+      </p>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/leaderboard.js"></script>
+</body>
+</html>
