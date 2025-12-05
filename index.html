@@ -1,75 +1,88 @@
 <!DOCTYPE html>
-<html lang="en" data-page="entry">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>StudyBuddy Quiz Contest</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Reuse your StudyBuddy styling vibe -->
   <link rel="stylesheet" href="global.css" />
 </head>
 <body>
-  <main class="sb-page">
-    <section class="sb-card entry-card">
-      <h1>🎉 StudyBuddy Quiz Contest</h1>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-logo">SB</div>
+        <div class="brand-text">
+          <span>StudyBuddy Quiz</span>
+          <span>Sprint Contest • SAIT</span>
+        </div>
+      </div>
+      <a class="header-link" href="leaderboard.html">Leaderboard ↗</a>
+    </header>
+
+    <main class="card">
+      <h1>Join the StudyBuddy Quiz</h1>
       <p class="muted">
-        Answer StudyBuddy questions as fast and accurately as you can.
-        Highest score + least time wins!
+        Answer fixed questions about StudyBuddy. The winner has:
       </p>
+      <ul class="rules-list">
+        <li>✅ The <strong>highest score</strong></li>
+        <li>⏱️ If scores tie, the <strong>fastest time</strong> wins</li>
+        <li>📧 Use your <strong>student email</strong> once only</li>
+      </ul>
 
-      <!-- Rules -->
-      <section class="rules">
-        <h2>📜 Contest Rules</h2>
-        <ol>
-          <li>This contest is open to current students only. Please use your <strong>official student email</strong>.</li>
-          <li>You will answer a fixed set of <strong>StudyBuddy-themed questions</strong> in one sitting.</li>
-          <li>Your <strong>timer starts as soon as you begin the quiz</strong> and stops only when you submit.</li>
-          <li>Your score is based on:
-            <ul>
-              <li>✅ Number of correct answers</li>
-              <li>⏱️ Time taken (faster time wins if scores are tied)</li>
-            </ul>
-          </li>
-          <li>You can <strong>attempt the quiz only once</strong> per email address.</li>
-          <li>Do not refresh the page or use the Back button during the quiz.</li>
-          <li>
-            By clicking “I agree to the rules”, you consent to your
-            <strong>name, email, score, and time</strong> being stored
-            for the leaderboard and prize decisions.
-          </li>
-          <li>The organizers’ decision on winners will be <strong>final and binding</strong>.</li>
-        </ol>
-      </section>
+      <div class="chip-warning">
+        ⚠️ Please <strong>do not refresh</strong> during the quiz – your timer
+        keeps running until you submit.
+      </div>
 
-      <!-- Entry form -->
-      <form id="entryForm" class="entry-form">
-        <div class="field">
-          <label for="firstName">First name</label>
-          <input id="firstName" name="firstName" type="text" required placeholder="Akash" />
+      <form id="entryForm" class="form-grid" autocomplete="off">
+        <div>
+          <label class="label" for="nameInput">First name</label>
+          <input
+            id="nameInput"
+            class="input"
+            type="text"
+            placeholder="e.g. Akash"
+            required
+          />
         </div>
 
-        <div class="field">
-          <label for="email">Student email</label>
-          <input id="email" name="email" type="email" required placeholder="yourname@school.edu" />
+        <div>
+          <label class="label" for="emailInput">Student email</label>
+          <input
+            id="emailInput"
+            class="input"
+            type="email"
+            placeholder="name@studentmail.com"
+            required
+          />
         </div>
 
-        <label class="checkbox">
-          <input id="agree" type="checkbox" required />
-          <span>I have read and agree to the contest rules.</span>
-        </label>
+        <div class="checkbox-row">
+          <input type="checkbox" id="agreeRules" />
+          <label for="agreeRules">
+            I understand that my <strong>rank is based on score first</strong>,
+            then <strong>time taken</strong>. I will only submit once.
+          </label>
+        </div>
 
-        <button type="submit" class="btn primary full-width">
-          🚀 Start Quiz
-        </button>
-
-        <p class="tiny muted">
-          Your details are used only for this contest leaderboard and prize contact.
-        </p>
+        <div class="button-row">
+          <button type="button" class="btn btn-ghost btn-sm" id="goLeaderboard">
+            View leaderboard
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary btn-full"
+            id="startBtn"
+            disabled
+          >
+            Start quiz →
+          </button>
+        </div>
       </form>
-    </section>
-  </main>
+    </main>
+  </div>
 
   <script src="js/entry.js"></script>
 </body>
 </html>
-
