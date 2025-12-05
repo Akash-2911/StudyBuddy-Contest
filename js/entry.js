@@ -11,7 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function validateForm() {
     const nameOk = nameInput.value.trim().length >= 2;
     const emailVal = emailInput.value.trim();
-    const emailOk = emailVal.includes("@") && emailVal.length >= 5;
+    const emailOk =
+      emailVal.includes("@") &&
+      emailVal.includes(".") &&
+      emailVal.length >= 5;
+
     const agreed = agreeRules.checked;
     startBtn.disabled = !(nameOk && emailOk && agreed);
   }
@@ -30,14 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = nameInput.value.trim();
     const email = emailInput.value.trim().toLowerCase();
 
-    // Persist for quiz + highlighting later
+    // Save data for quiz + leaderboard linking
     sessionStorage.setItem("sb_contest_name", name);
     sessionStorage.setItem("sb_contest_email", email);
 
-    // Clean any previous run
+    // Reset timer
     sessionStorage.removeItem("sb_contest_start");
 
+    // Go to quiz page
     window.location.href = "quiz.html";
   });
 });
-
