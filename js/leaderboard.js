@@ -8,6 +8,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const QUESTIONS_COUNT = 9;
 
+// Format seconds as "30s" or "1m 12s"
 function formatTimeShort(sec) {
   sec = Number(sec) || 0;
   return sec < 60 ? `${sec}s` : `${Math.floor(sec / 60)}m ${sec % 60}s`;
@@ -19,6 +20,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const footer = document.getElementById("lbFooter");
 
   const currentEmail = (sessionStorage.getItem("sb_contest_email") || "").toLowerCase();
+
+  // 🥇 🥈 🥉 Medals
+  const medals = ["🥇", "🥈", "🥉"];
 
   async function load() {
     footer.textContent = "Loading leaderboard...";
@@ -41,18 +45,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       const li = document.createElement("li");
       li.className = "lb-row";
 
+      // Highlight current user
       if (row.email && row.email.toLowerCase() === currentEmail) {
         li.classList.add("lb-you");
       }
 
+      // Medal or rank number
+      const rankDisplay = i < 3 ? medals[i] : i + 1;
+
       li.innerHTML = `
         <div class="lb-left">
-          <div class="lb-rank">${i + 1}</div>
-          <div>
+          <div class="lb-rank">${rankDisplay}</div>
+          <div class="lb-info">
             <div class="lb-name">${row.name}</div>
-            <div class="lb-meta">${row.email.split("@")[0]} • ${formatTimeShort(
-        row.time_taken
-      )}</div>
+            <div class="lb-meta">${formatTimeShort(row.time_taken)}</div>
           </div>
         </div>
         <div class="lb-score"><span>${row.score}</span> / ${QUESTIONS_COUNT}</div>
