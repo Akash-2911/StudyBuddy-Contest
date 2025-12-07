@@ -5,6 +5,90 @@
   <title>StudyBuddy Quiz – Leaderboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="global.css" />
+
+  <style>
+    /* Cleaner Apple-style leaderboard enhancements */
+
+    .leaderboard-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+
+    .lb-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid #eee;
+      transition: background 0.2s ease;
+    }
+
+    .lb-row:first-child {
+      border-top: 1px solid #eee;
+    }
+
+    .lb-row:hover {
+      background: #fafafa;
+    }
+
+    /* Highlight current user */
+    .lb-you {
+      background: #f0faff !important;
+      border-left: 4px solid #007aff;
+    }
+
+    .lb-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lb-rank {
+      font-size: 1.5rem;
+      width: 32px;
+      text-align: center;
+    }
+
+    .lb-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lb-name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .lb-meta {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .lb-score {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #222;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* Mobile-friendly */
+    @media (max-width: 480px) {
+      .lb-row {
+        padding: 12px;
+      }
+      .lb-name {
+        font-size: 0.95rem;
+      }
+      .lb-meta {
+        font-size: 0.8rem;
+      }
+      .lb-score {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="page-shell">
@@ -13,10 +97,10 @@
         <div class="brand-logo">SB</div>
         <div class="brand-text">
           <span>StudyBuddy Quiz</span>
-          <span>Live Leaderboard</span>
+          <span>Leaderboard</span>
         </div>
       </div>
-      <a class="header-link" href="index.html">Enter quiz ↗</a>
+      <a class="header-link" href="index.html">Enter Quiz ↗</a>
     </header>
 
     <main class="card">
@@ -26,13 +110,14 @@
           Refresh ↺
         </button>
       </div>
+
       <p class="muted">
-        Sorted by <strong>score (high → low)</strong>, then
-        <strong>time taken (low → high)</strong>.
+        Sorted by <strong>highest score</strong> and then
+        <strong>fastest time</strong>.
       </p>
 
       <ul class="leaderboard-list" id="leaderboardList">
-        <!-- rows injected by JS -->
+        <!-- JS Injects rows -->
       </ul>
 
       <p class="center muted" id="lbFooter" style="margin-top:10px;">
@@ -40,7 +125,6 @@
       </p>
     </main>
   </div>
-  
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="js/leaderboard.js"></script>
