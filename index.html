@@ -8,52 +8,58 @@
 </head>
 <body>
   <div class="page-shell">
+    
+    <!-- Header -->
     <header class="site-header">
       <div class="brand">
         <div class="brand-logo">SB</div>
         <div class="brand-text">
           <span>StudyBuddy Quiz</span>
-          <span>Sprint Contest • SAIT</span>
+          <span>Spring Contest</span>
         </div>
       </div>
       <a class="header-link" href="leaderboard.html">Leaderboard ↗</a>
     </header>
 
+    <!-- Main Card -->
     <main class="card">
       <h1>Join the StudyBuddy Quiz</h1>
+
       <p class="muted">
-        Answer fixed questions about StudyBuddy. The winner has:
+        Test your knowledge about StudyBuddy! Winners are ranked by:
       </p>
+
       <ul class="rules-list">
-        <li>✅ The <strong>highest score</strong></li>
-        <li>⏱️ If scores tie, the <strong>fastest time</strong> wins</li>
-        <li>📧 Use your <strong>student email</strong> once only</li>
+        <li>🏆 <strong>Highest score</strong> comes first</li>
+        <li>⏱️ If scores tie, <strong>fastest time</strong> wins</li>
+        <li>📧 Use your <strong>personal email</strong> (1 attempt only)</li>
       </ul>
 
       <div class="chip-warning">
-        ⚠️ Please <strong>do not refresh</strong> during the quiz – your timer
-        keeps running until you submit.
+        ⚠️ Do <strong>not refresh</strong> during the quiz — the timer keeps running.
       </div>
 
+      <!-- Entry Form -->
       <form id="entryForm" class="form-grid" autocomplete="off">
+
         <div>
           <label class="label" for="nameInput">First name</label>
           <input
             id="nameInput"
             class="input"
             type="text"
-            placeholder="e.g. Akash"
+            placeholder="e.g. Sarah"
             required
           />
         </div>
 
         <div>
-          <label class="label" for="emailInput">Student email</label>
+          <label class="label" for="emailInput">Personal email</label>
           <input
             id="emailInput"
             class="input"
             type="email"
-            placeholder="name@studentmail.com"
+            placeholder="example@gmail.com"
             required
           />
         </div>
@@ -61,8 +67,8 @@
         <div class="checkbox-row">
           <input type="checkbox" id="agreeRules" />
           <label for="agreeRules">
-            I understand that my <strong>rank is based on score first</strong>,
-            then <strong>time taken</strong>. I will only submit once.
+            I agree that my rank is based on <strong>score first</strong> and
+            <strong>time second</strong>. I will only submit once.
           </label>
         </div>
 
@@ -70,6 +76,7 @@
           <button type="button" class="btn btn-ghost btn-sm" id="goLeaderboard">
             View leaderboard
           </button>
+
           <button
             type="submit"
             class="btn btn-primary btn-full"
@@ -79,6 +86,7 @@
             Start quiz →
           </button>
         </div>
+
       </form>
     </main>
   </div>
